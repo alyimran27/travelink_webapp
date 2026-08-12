@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Aplikasi login pakai PIN sendiri (bukan Firebase Auth login),
+    // tapi setiap browser tetap sign-in anonim ke Firebase.
+    // Aturan ini menutup akses dari luar aplikasi.
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
